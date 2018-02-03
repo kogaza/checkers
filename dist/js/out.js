@@ -9801,16 +9801,16 @@ var App = function (_React$Component) {
       });
 
       //superChicken
-      if (pawnToMove.animal === "chicken" && pawnToMove.player === "green" && (here === 0 || here === 1 || here === 2)) {
+      if (pawnToMove.animal === "chicken" && pawnToMove.player === "white" && (here === 0 || here === 1 || here === 2)) {
         pawnToMove.animal = "superChicken";
       }
-      if (pawnToMove.animal === "chicken" && pawnToMove.player === "blue" && (here === 9 || here === 10 || here === 11)) {
+      if (pawnToMove.animal === "chicken" && pawnToMove.player === "black" && (here === 9 || here === 10 || here === 11)) {
         pawnToMove.animal = "superChicken";
       }
 
       var newPawn = new _Pawn2.default(here, pawnToMove.animal, pawnToMove.player, false, false).getState();
 
-      newState.board[here].player = newState.board[here].player == "green" ? "blue" : "green";
+      newState.board[here].player = newState.board[here].player == "white" ? "black" : "white";
       if (newState.board[here].animal === "superChicken") {
         newState.board[here].animal = "chicken";
       }
@@ -9819,7 +9819,7 @@ var App = function (_React$Component) {
         location.reload();
       }
 
-      newState.whoMoves = newState.whoMoves == "green" ? "blue" : "green";
+      newState.whoMoves = newState.whoMoves == "white" ? "black" : "white";
       newState.selectedCell = false;
 
       _this.setState(newState);
@@ -9827,11 +9827,11 @@ var App = function (_React$Component) {
 
     _this.state = {
       isPlaying: true, //gra aktywna
-      whoMoves: 'green', //czyj ruch: gracz white (góra), gracz black (dół)
+      whoMoves: 'white', //czyj ruch: gracz white (góra), gracz black (dół)
       selectedCell: false, //które pole jest kliknięte
       availableCells: [], //dostępne pola do ruchu dla zaznaczonego
       //opis figur na planszy
-      board: [new _Pawn2.default(0, "white").getState(), null, new _Pawn2.default(2, "white").getState(), null, new _Pawn2.default(4, "white").getState(), null, new _Pawn2.default(6, "white").getState(), null, new _Pawn2.default(8, "white").getState(), null, new _Pawn2.default(10, "white").getState(), null, new _Pawn2.default(12, "white").getState(), null, new _Pawn2.default(14, "white").getState(), null, null, null, null, null, null, null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(9, "black").getState(), null, new _Pawn2.default(10, "black").getState(), null, new _Pawn2.default(11, "black").getState()]
+      board: [new _Pawn2.default(0, "white").getState(), null, new _Pawn2.default(2, "white").getState(), null, new _Pawn2.default(4, "white").getState(), null, new _Pawn2.default(6, "white").getState(), null, new _Pawn2.default(8, "white").getState(), null, new _Pawn2.default(10, "white").getState(), null, new _Pawn2.default(12, "white").getState(), null, new _Pawn2.default(14, "white").getState(), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(7, "black").getState(), null, new _Pawn2.default(9, "black").getState(), null, new _Pawn2.default(10, "black").getState(), null, new _Pawn2.default(11, "black").getState()]
     };
     return _this;
   }
@@ -22365,86 +22365,155 @@ var Board = function (_React$Component) {
   _createClass(Board, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
 
       var fieldIndex = 0;
-      var rowNumber = 1;
+      var rowNumber = 8;
       var boardFields = [];
       var startState = this.props.state;
       var fields = this.props.game;
+      var row = 0;
 
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 8; i++) {
 
-        if (i == 0) {
-          boardFields.push(_react2.default.createElement(
-            'tr',
-            { className: 'row' },
-            _react2.default.createElement('td', null),
-            _react2.default.createElement(
-              'td',
-              { className: 'cell-label' },
-              'A'
-            ),
-            _react2.default.createElement(
-              'td',
-              { className: 'cell-label' },
-              'B'
-            ),
-            _react2.default.createElement(
-              'td',
-              { className: 'cell-label' },
-              'C'
-            )
-          ));
-        } else {
+        // if(i==0){
+        //   boardFields.push(  <tr className="row">
+        //               <td></td>
+        //               <td className="cell-label">A</td>
+        //               <td className="cell-label">B</td>
+        //               <td className="cell-label">C</td>
+        //               <td className="cell-label">D</td>
+        //               <td className="cell-label">E</td>
+        //               <td className="cell-label">F</td>
+        //               <td className="cell-label">G</td>
+        //               <td className="cell-label">H</td>
+        //             </tr>
+        //           );
+        // }else{
 
-          boardFields.push(_react2.default.createElement(
-            'tr',
-            { className: 'row' },
-            _react2.default.createElement(
-              'td',
-              null,
-              rowNumber++
-            ),
-            fields.filter(function (v, i) {
-              return i >= fieldIndex && i < fieldIndex + 3;
-            }).map(function (p, i) {
-              if (p === null || p.type === null) {
-                return _react2.default.createElement('td', {
-                  key: i,
-                  'data-index': fieldIndex + i,
-                  className: 'cell ' + (p && p.available ? _this2.props.whoMoves === "blue" ? 'cell-available-blue' : 'cell-available-green' : ''),
-                  onClick: function onClick() {
-                    return _this2.handleClickPawn(p);
-                  } });
-              } else {
-                var classes = "animal " + p.classes.join(' ');
-                var moves = "cell";
-                if (_this2.props.whoMoves === p.player) {
-                  moves += " cell-move";
-                }
+        boardFields.push(_react2.default.createElement(
+          'tr',
+          { className: 'row' },
+          _react2.default.createElement(
+            'td',
+            null,
+            rowNumber--
+          ),
+          fields.filter(function (v, i) {
+            return i >= fieldIndex && i < fieldIndex + 8;
+          }).map(function (p, i) {
+            fieldIndex += 1;
 
-                if (p.selected === true) {
-                  moves += " cell-selected";
-                }
-                if (p.available === true) {
-                  if (_this2.props.whoMoves === "blue") {
-                    moves += " cell-available-blue";
-                  } else {
-                    moves += " cell-available-green";
-                  }
-                }
+            if (fieldIndex % 8 === 1) {
+              row++;
+              console.log("row =", row);
+            }
 
-                return _react2.default.createElement('td', { key: i, 'data-index': fieldIndex + i, className: moves,
-                  onClick: function onClick() {
-                    return _this2.handleClickPawn(p);
-                  } });
-              }
-            })
-          ));
-          fieldIndex += 3;
-        }
+            if ((fieldIndex - row) % 2 === 0) {
+              console.log("index =", fieldIndex);
+              return _react2.default.createElement('td', {
+                key: i,
+                'data-index': fieldIndex,
+                className: "cell white"
+              });
+            } else {
+              // fieldIndex += 1;
+              // if(fieldIndex%8 === 1) row ++;
+
+              // console.log(row);
+              return _react2.default.createElement('td', {
+                key: i,
+                'data-index': fieldIndex,
+                className: "cell black"
+              });
+            }
+
+            // if( p === null || p.type === null){
+            //   return (
+            //       <td 
+            //       key={i} 
+            //       data-index={fieldIndex+i}
+            //       className={"cell white"}
+
+            //       // className={`cell ${p && p.available ? 
+            //       //   (this.props.whoMoves === "white" ? 
+            //       //     'cell-available-white' :
+            //       //     'cell-available-black' ) : ''}`}
+            //       onClick={() => this.handleClickPawn(p)}/>
+            //   );
+            // }else{
+
+            //   let classes = "animal " + p.classes.join(' ');
+            //   let moves = "cell black";
+            //   if(this.props.whoMoves === p.player){
+            //     moves += " cell-move";
+            //   }
+
+            //   if(p.selected === true){
+            //     moves += " cell-selected";
+            //   }
+            //   if(p.available === true){
+            //     if(this.props.whoMoves === "white"){
+            //       moves += " cell-available-white";
+            //     }else {
+            //       moves += " cell-available-black";
+            //     }
+            //   }
+
+            //   return <td key={i} data-index={fieldIndex+i} className={moves} 
+            //   onClick={() => this.handleClickPawn(p)}>
+
+            //     </td>;
+            // }
+          })
+        ));
+        // fieldIndex +=8;
       }
+
+      boardFields.push(_react2.default.createElement(
+        'tr',
+        { className: 'row' },
+        _react2.default.createElement('td', null),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'A'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'B'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'C'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'D'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'E'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'F'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'G'
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'cell-label' },
+          'H'
+        )
+      ));
 
       var board = _react2.default.createElement(
         'div',

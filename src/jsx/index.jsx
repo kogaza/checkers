@@ -10,7 +10,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       isPlaying: true, //gra aktywna
-      whoMoves: 'green', //czyj ruch: gracz white (góra), gracz black (dół)
+      whoMoves: 'white', //czyj ruch: gracz white (góra), gracz black (dół)
       selectedCell: false, //które pole jest kliknięte
       availableCells: [], //dostępne pola do ruchu dla zaznaczonego
       //opis figur na planszy
@@ -30,6 +30,33 @@ class App extends React.Component {
         new Pawn(12, "white").getState(),
         null,
         new Pawn(14, "white").getState(),
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
         null,
         null,
         null,
@@ -152,14 +179,14 @@ class App extends React.Component {
     //superChicken
     if(
       pawnToMove.animal === "chicken" && 
-      pawnToMove.player === "green" &&
+      pawnToMove.player === "white" &&
       (here === 0 || here === 1 || here === 2)
     ){
       pawnToMove.animal = "superChicken";
     }
     if(
       pawnToMove.animal === "chicken" && 
-      pawnToMove.player === "blue" &&
+      pawnToMove.player === "black" &&
       (here === 9 || here === 10 || here === 11)
     ){
       pawnToMove.animal = "superChicken";
@@ -173,7 +200,7 @@ class App extends React.Component {
         false, false
       ).getState()
 
-    newState.board[here].player = newState.board[here].player == "green" ? "blue" : "green";
+    newState.board[here].player = newState.board[here].player == "white" ? "black" : "white";
     if(newState.board[here].animal === "superChicken"){
       newState.board[here].animal = "chicken";
     }
@@ -182,7 +209,7 @@ class App extends React.Component {
       location.reload();
     }
     
-    newState.whoMoves = newState.whoMoves == "green" ? "blue" : "green"; 
+    newState.whoMoves = newState.whoMoves == "white" ? "black" : "white"; 
     newState.selectedCell = false;
 
     this.setState(newState);
